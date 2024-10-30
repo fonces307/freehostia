@@ -41,21 +41,22 @@ async def login(username, password, panel):
             const input = document.querySelector(selector);  
             if (input) input.value = '';  
         }', '#username')  
-   
+
+        
         await page.fill('#username', username)  
         await page.fill('#password', password)  
   
-        # 提交表单，这里假设点击提交按钮或通过表单的提交事件来登录  
-        login_button_selector = '#submit'  # 根据实际情况修改选择器  
-        await page.click(login_button_selector)  # 或者尝试 page.evaluate(() => document.querySelector(login_button_selector).click())  
+      
+        login_button_selector = '#submit'  #根据实际情况修改选择器  
+        await page.click(login_button_selector)  #或者尝试page.evaluate(() => document.querySelector(login_button_selector).click())  
   
-        # 等待页面导航，这里可能需要设置一些选项来匹配特定的导航类型，比如等待直到某个URL模式匹配  
-        await page.wait_for_navigation()  # 根据需要，这里可能需要额外的参数，如 {url: '**/dashboard**'} 
+         
+        await page.wait_for_navigation()  #根据需要，这里可能需要额外的参数，如 {url: '**/dashboard**'} 
 
-        is_logged_in = await page.evaluate('''() => {
+        is_logged_in = await page.evaluate(() =>  
             const logoutButton = document.querySelector('a[href="/logout/"]');
             return logoutButton !== null;
-        }''')
+        )
 
         return is_logged_in
 
