@@ -21,35 +21,36 @@ async def delay_time(ms):
 browser = None
 
 # telegram消息
-message = 'serv00&ct8自动化脚本运行\n'
+message = 'serv&ct8自动化脚本运行\n'
 
 async def login(username, password, panel):
     global browser
 
     page = None  # 确保 page 在任何情况下都被定义
-    serviceName = 'ct8' if 'ct8' in panel else 'serv00'
+    serviceName = 'ct8' if 'ct8' in panel else 'serv'
     try:
         if not browser:
             browser = await launch(headless=True, args=['--no-sandbox', '--disable-setuid-sandbox'])
 
         page = await browser.newPage()
-        url = f'https://{panel}/login/?next=/www/'
+        url = f'https://{panel}/login/'
         await page.goto(url)
 
-        username_input = await page.querySelector('#id_username')
-        if username_input:
-            await page.evaluate('''(input) => input.value = ""''', username_input)
-
-        await page.type('#id_username', username)
-        await page.type('#id_password', password)
-
-        login_button = await page.querySelector('#submit')
-        if login_button:
-            await login_button.click()
-        else:
-            raise Exception('无法找到登录按钮')
-
-        await page.waitForNavigation()
+         # 注意：这里的选择器字符串应该被引号包围，但因为我们是在Python字符串中构建JavaScript字符串，所以需要使用转义字符  
+        await page.evaluate(f'''(selector) => {  
+            const input = document.querySelector(selector);  
+            if (input) input.value = '';  
+        }', '#username')  
+   
+        await page.fill('#username', username)  
+        await page.fill('#password', password)  
+  
+        # 提交表单，这里假设点击提交按钮或通过表单的提交事件来登录  
+        login_button_selector = '#submit'  # 根据实际情况修改选择器  
+        await page.click(login_button_selector)  # 或者尝试 page.evaluate(() => document.querySelector(login_button_selector).click())  
+  
+        # 等待页面导航，这里可能需要设置一些选项来匹配特定的导航类型，比如等待直到某个URL模式匹配  
+        await page.wait_for_navigation()  # 根据需要，这里可能需要额外的参数，如 {url: '**/dashboard**'} 
 
         is_logged_in = await page.evaluate('''() => {
             const logoutButton = document.querySelector('a[href="/logout/"]');
@@ -68,7 +69,7 @@ async def login(username, password, panel):
 
 async def main():
     global message
-    message = 'serv00&ct8自动化脚本运行\n'
+    message = 'serv&ct8自动化脚本运行\n'
 
     try:
         async with aiofiles.open('accounts.json', mode='r', encoding='utf-8') as f:
@@ -83,7 +84,7 @@ async def main():
         password = account['password']
         panel = account['panel']
 
-        serviceName = 'ct8' if 'ct8' in panel else 'serv00'
+        serviceName = 'ct8' if 'ct8' in panel else 'serv'
         is_logged_in = await login(username, password, panel)
 
         if is_logged_in:
