@@ -50,10 +50,10 @@ async def login(username, password, panel):
          
         await page.wait_for_navigation()  #根据需要，这里可能需要额外的参数，如 {url: '**/dashboard**'} 
 
-        is_logged_in = await page.evaluate(() =>  
-            const logoutButton = document.querySelector('a[href="/logout/"]');
-            return logoutButton !== null;
-        )
+        is_logged_in = await page.evaluate('''() => {  
+            const logoutButton = document.querySelector('a[href="/logout/"]');  
+            return logoutButton !== null;  
+        }''') 
 
         return is_logged_in
 
