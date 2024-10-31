@@ -43,8 +43,11 @@ async def login(username, password, panel):
         await page.type('#username', username)
         await page.type('#password', password)
 
-        login_button = driver.find_element(By.CSS_SELECTOR, "input[type='submit'][value='Log In']")  
-        login_button.click() 
+        login_button = await page.querySelector("input[type='submit'][value='Log In']")
+        if login_button:
+            await login_button.click()
+        else:
+            raise Exception('无法找到登录按钮')
 
         await page.waitForNavigation()
 
