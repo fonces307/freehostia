@@ -43,8 +43,8 @@ async def login(username, password, panel):
         await page.type('#username', username)
         await page.type('#password', password)
  
-        login_button_selector = '#submit'  #根据实际情况修改选择器  
-        await page.click(login_button_selector)  #或者尝试page.evaluate(() => document.querySelector(login_button_selector).click())  
+        login_button = driver.find_element(By.CSS_SELECTOR, "input[type='submit'][value='Log In']")  
+        login_button.click()   
   
          
         await page.wait_for_navigation()  #根据需要，这里可能需要额外的参数，如 {url: '**/dashboard**'} 
