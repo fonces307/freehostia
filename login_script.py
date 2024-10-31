@@ -40,8 +40,8 @@ async def login(username, password, panel):
         if username_input:
             await page.evaluate('''(input) => input.value = ""''', username_input)
         
-        await page.type('#id_username', username)
-        await page.type('#id_password', password)
+        await page.type('#username', username)
+        await page.type('#password', password)
  
         login_button_selector = '#submit'  #根据实际情况修改选择器  
         await page.click(login_button_selector)  #或者尝试page.evaluate(() => document.querySelector(login_button_selector).click())  
