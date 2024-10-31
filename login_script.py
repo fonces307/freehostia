@@ -37,10 +37,10 @@ async def login(username, password, panel):
         await page.goto(url)
 
          # 注意：这里的选择器字符串应该被引号包围，但因为我们是在Python字符串中构建JavaScript字符串，所以需要使用转义字符  
-        await page.evaluate(f'''(selector) => {  
-            const input = document.querySelector(selector);  
-            if (input) input.value = '';  
-        }', '#username')  
+         await page.evaluate((selector) => {  
+             const input = document.querySelector(selector);  
+             if (input) input.value = '';  
+        }, '#username');
 
         
         await page.fill('#username', username)  
