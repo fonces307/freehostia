@@ -21,13 +21,13 @@ async def delay_time(ms):
 browser = None
 
 # telegram消息
-message = 'serv&ct8自动化脚本运行\n'
+message = 'serv00&ct8自动化脚本运行\n'
 
 async def login(username, password, panel):
     global browser
 
     page = None  # 确保 page 在任何情况下都被定义
-    serviceName = 'ct8' if 'ct8' in panel else 'serv'
+    serviceName = 'ct8' if 'ct8' in panel else 'serv00'
     try:
         if not browser:
             browser = await launch(headless=True, args=['--no-sandbox', '--disable-setuid-sandbox'])
@@ -66,7 +66,7 @@ async def login(username, password, panel):
 
 async def main():
     global message
-    message = 'serv&ct8自动化脚本运行\n'
+    message = 'serv00&ct8自动化脚本运行\n'
 
     try:
         async with aiofiles.open('accounts.json', mode='r', encoding='utf-8') as f:
@@ -81,7 +81,7 @@ async def main():
         password = account['password']
         panel = account['panel']
 
-        serviceName = 'ct8' if 'ct8' in panel else 'serv'
+        serviceName = 'ct8' if 'ct8' in panel else 'serv00'
         is_logged_in = await login(username, password, panel)
 
         if is_logged_in:
