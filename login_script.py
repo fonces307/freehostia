@@ -35,24 +35,19 @@ async def login(username, password, panel):
         page = await browser.newPage()
         url = f'https://{panel}/login/'
         await page.goto(url)
-        
-        username_input = await page.querySelector("input[type='text'][value='']")
-        if username_input:
-            await page.evaluate('''(input) => input.value = ""''', username_input)
-        
-        await page.type("input[type='text'][value='']", username)
-        await page.type("input[type='password'][value='']", password)
 
-        login_button = await page.querySelector("input[type='submit'][value='Log In']")
-        if login_button:
-            await login_button.click()
-        else:
-            raise Exception('无法找到登录按钮')
+
+        await page.waitForSelector('#username') 
+        
+        await page.type('#username', username)  
+        await page.type('#password', password)
+
+        await page.click('input[type="submit"]')  # 点击提交按钮 
 
         await page.waitForNavigation()
 
         is_logged_in = await page.evaluate('''() => {
-            const logoutButton = document.querySelector('a[href="/logout/"]');
+            const logoutButton = document.querySelector('a[href="/"]');
             return logoutButton !== null;
         }''')
 
