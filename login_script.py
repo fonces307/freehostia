@@ -17,6 +17,7 @@ def format_to_iso(date):
 async def delay_time(ms):
     await asyncio.sleep(ms / 1000)
 
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install())) 
 # 全局浏览器实例
 browser = None
 
