@@ -36,8 +36,10 @@ async def login(username, password, panel):
         url = f'https://{panel}/login/'
         await page.goto(url)
 
-
-        await page.waitForSelector('#username') 
+        username_input = await page.querySelector('#username')
+        if username_input:
+            await page.evaluate('''(input) => input.value = ""''', username_input)
+ 
         
         await page.type('#username', username)  
         await page.type('#password', password)
