@@ -40,7 +40,7 @@ async def login(username, password, panel):
         if username_input:
             await page.evaluate('''(input) => input.value = ""''', username_input)
         
-        await page.type('"input[type='text'][value='']", username)
+        await page.type("input[type='text'][value='']", username)
         await page.type("input[type='password'][value='']", password)
 
         login_button = await page.querySelector("input[type='submit'][value='Log In']")
