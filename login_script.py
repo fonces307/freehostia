@@ -39,20 +39,21 @@ async def login(username, password, panel):
         username_input = await page.querySelector('#username')
         if username_input:
             await page.evaluate('''(input) => input.value = ""''', username_input)
-        
+
         await page.type('#username', username)
         await page.type('#password', password)
- 
-        login_button = driver.find_element(By.CSS_SELECTOR, "input[type='submit'][value='Log In']")  
-        login_button.click()   
-  
-         
-        await page.wait_for_navigation()  #根据需要，这里可能需要额外的参数，如 {url: '**/dashboard**'} 
 
-        is_logged_in = await page.evaluate('''() => {  
-            const logoutButton = document.querySelector('a[href="/logout/"]');  
-            return logoutButton !== null;  
-        }''') 
+        login_button = driver.find_element(By.CSS_SELECTOR, "input[type='submit'][value='Log In']")  
+        login_button.click() 
+        else:
+            raise Exception('无法找到登录按钮')
+
+        await page.waitForNavigation()
+
+        is_logged_in = await page.evaluate('''() => {
+            const logoutButton = document.querySelector('a[href="/logout/"]');
+            return logoutButton !== null;
+        }''')
 
         return is_logged_in
 
